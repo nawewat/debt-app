@@ -790,7 +790,10 @@ function rateCard(){
    <p class="hint" style="margin-top:10px">${S.rate>LEGAL_MAX?'<span class="c-loan">⚠️ เกินเพดานกฎหมาย 15%/ปี</span> · ':''}นับงวดจากวันที่ยืม</p></div>`;
 }
 function bindRate(){
-  const ri=$('#rateIn');if(ri){ri.oninput=()=>{const v=parseFloat(ri.value);S.rate=isNaN(v)||v<0?0:v;clearTimeout(bindRate._t);bindRate._t=setTimeout(()=>{const pos=ri.selectionStart;render();const n=$('#rateIn');if(n){n.focus();try{n.setSelectionRange(pos,pos);}catch(e){}}},350);};}
+  const ri=$('#rateIn');if(ri){
+    ri.oninput=()=>{const v=parseFloat(ri.value);S.rate=isNaN(v)||v<0?0:v;}; // อัปเดตค่าเงียบๆ ไม่วาดหน้าใหม่ระหว่างพิมพ์
+    ri.onchange=()=>render(); // คำนวณใหม่เมื่อพิมพ์เสร็จ (ออกจากช่อง/กด Done)
+  }
   document.querySelectorAll('#modeSeg button').forEach(b=>b.onclick=()=>{S.mode=b.dataset.v;render();});
 }
 
